@@ -3,37 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Canlı Saat ve Konum Harita</title>
+  <title>Canlı Saat, Tarih ve Konum Harita</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Leaflet Harita CSS -->
+  <!-- Leaflet CSS (Harita için) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
   <style>
     body {
       background-color: #e9ecef;
+      font-family: Arial, sans-serif;
     }
     .saat-kutu {
       margin-top: 50px;
       font-size: 60px;
       font-weight: bold;
       background-color: #fff;
-      padding: 50px;
+      padding: 50px 20px;
       border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
-    .konum-kutu {
+    .tarih-kutu, .konum-kutu {
       font-size: 20px;
-      margin-top: 20px;
-      margin-bottom: 20px;
+      margin-top: 15px;
       color: #333;
     }
     #map {
       height: 400px;
+      margin-top: 30px;
       border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     }
   </style>
 </head>
@@ -41,24 +43,37 @@
 
   <div class="container text-center">
     <div class="saat-kutu" id="saat">--:--:--</div>
+    <div class="tarih-kutu" id="tarih">Tarih yükleniyor...</div>
     <div class="konum-kutu" id="konum">Konum alınıyor...</div>
     <div id="map"></div>
   </div>
 
-  <!-- Leaflet Harita JS -->
+  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    // Saat gösterimi
-    function guncelleSaat() {
+    // Saat ve tarih güncelleme
+    function guncelleSaatTarih() {
       const simdi = new Date();
+
+      // Saat
       const saat = String(simdi.getHours()).padStart(2, '0');
       const dakika = String(simdi.getMinutes()).padStart(2, '0');
       const saniye = String(simdi.getSeconds()).padStart(2, '0');
-      document.getElementById("saat").innerHTML = saat + ":" + dakika + ":" + saniye;
+      document.getElementById("saat").innerHTML = `${saat}:${dakika}:${saniye}`;
+
+      // Tarih
+      const gunler = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+      const aylar = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+      const gun = gunler[simdi.getDay()];
+      const tarih = simdi.getDate();
+      const ay = aylar[simdi.getMonth()];
+      const yil = simdi.getFullYear();
+      document.getElementById("tarih").innerHTML = `${gun}, ${tarih} ${ay} ${yil}`;
     }
-    setInterval(guncelleSaat, 1000);
-    guncelleSaat();
+
+    setInterval(guncelleSaatTarih, 1000);
+    guncelleSaatTarih();
 
     // Konum ve Harita
     if ("geolocation" in navigator) {
@@ -69,7 +84,7 @@
         document.getElementById("konum").innerText = `Enlem: ${lat.toFixed(4)}, Boylam: ${lon.toFixed(4)}`;
 
         // Harita kur
-        const map = L.map('map').setView([lat, lon], 13);
+        const map = L.map('map').setView([lat, lon], 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '© OpenStreetMap'
