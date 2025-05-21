@@ -1,8 +1,7 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
+    background-color: #e8f5f3;
 }
 
-iframe {
-  border: 0;
+#clock {
+    text-shadow: 0 0 8px #28a745;
 }
-
