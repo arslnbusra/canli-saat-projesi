@@ -1,21 +1,20 @@
-function updateClockAndDate() {
-  const now = new Date();
+function updateClock() {
+    const now = new Date();
 
-  // Saat
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+    let saat = now.getHours().toString().padStart(2, '0');
+    let dakika = now.getMinutes().toString().padStart(2, '0');
+    let saniye = now.getSeconds().toString().padStart(2, '0');
 
-  // Tarih
-  const days = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
-  const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-  const day = now.getDate();
-  const month = months[now.getMonth()];
-  const year = now.getFullYear();
-  const weekday = days[now.getDay()];
-  document.getElementById("date").textContent = `${day} ${month} ${year} ${weekday}`;
+    const zaman = `${saat}:${dakika}:${saniye}`;
+    document.getElementById('clock').textContent = zaman;
+
+    const gunler = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+    const aylar = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz',
+                   'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+
+    const tarih = `${now.getDate()} ${aylar[now.getMonth()]} ${now.getFullYear()} ${gunler[now.getDay()]}`;
+    document.getElementById('date').textContent = tarih;
 }
 
-setInterval(updateClockAndDate, 1000);
-updateClockAndDate();
+setInterval(updateClock, 1000);
+updateClock();
