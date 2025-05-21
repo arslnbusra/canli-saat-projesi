@@ -1,8 +1,8 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.card {
-  min-width: 300px;
+iframe {
+  border: 0;
 }
 
