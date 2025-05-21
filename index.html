@@ -1,38 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Canlı Saat & Konum</title>
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Canlı Saat ve Konum</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    body {
+      background-color: #e9ecef;
+    }
+    .saat-kutu {
+      margin-top: 100px;
+      font-size: 60px;
+      font-weight: bold;
+      background-color: #f8f9fa;
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    }
+    .konum-kutu {
+      font-size: 20px;
+      margin-top: 20px;
+      color: #333;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
 
-  <div class="container d-flex flex-column align-items-center justify-content-center min-vh-100">
+  <div class="container text-center">
+    <!-- Saat gösterimi -->
+    <div class="saat-kutu" id="saat">--:--:--</div>
 
-    <!-- Saat -->
-    <div class="text-center mb-5">
-      <h1 id="clock" class="display-3 fw-bold text-success"></h1>
-      <p id="date" class="lead text-muted fs-4"></p>
-    </div>
-
-    <!-- Konum Kartı -->
-    <div class="card shadow p-4" style="width: 100%; max-width: 800px;">
-      <h5 class="card-title mb-3 text-danger">📍 Konumunuz:</h5>
-      <div class="ratio ratio-16x9">
-        <iframe 
-          src="https://www.google.com/maps?q=39.9418,32.8219&hl=tr&z=16&output=embed"
-          style="border:0;" 
-          allowfullscreen 
-          loading="lazy">
-        </iframe>
-      </div>
-    </div>
-
+    <!-- Konum bilgisi -->
+    <div class="konum-kutu" id="konum">Konum alınıyor...</div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- JavaScript -->
+  <script>
+    // Canlı saati güncelleyen fonksiyon
+    function guncelleSaat() {
+      var simdi = new Date();
+      var saat = String(simdi.getHours()).padStart(2, '0');
+      var dakika = String(simdi.getMinutes()).padStart(2, '0');
+      var saniye = String(simdi.getSeconds()).padStart(2, '0');
+      document.getElementById("saat").innerHTML = saat + ":" + dakika + ":" + saniye;
+    }
+
+    // Her saniyede saati güncelle
+    setInterval(guncelleSaat, 1000);
+    guncelleSaat(); // Sayfa yüklendiğinde bir kez hemen çalıştır
+
+    // Konum bilgisi alan fonksiyon
+    function konumuGoster() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var enlem = position.coords.latitude.toFixed(4);
+          var boylam = position.coords.longitude.toFixed(4);
+          document.getElementById("konum").innerHTML =
+            "Enlem: " + enlem + "°, Boylam: " + boylam + "°";
+        }, function(error) {
+          document.getElementById("konum").innerHTML =
+            "Konum alınamadı: " + error.message;
+        });
+      } else {
+        document.getElementById("konum").innerHTML =
+          "Tarayıcınız konum özelliğini desteklemiyor.";
+      }
+    }
+
+    konumuGoster(); // Sayfa yüklendiğinde konumu al
+  </script>
+
 </body>
 </html>
